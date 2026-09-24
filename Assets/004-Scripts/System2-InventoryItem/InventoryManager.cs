@@ -146,27 +146,30 @@ public class InventoryManager : MonoBehaviour
         OnInventoryUpdated?.Invoke();
     }
 
-    public void SortInventory()
+    public void SortInventoryByType()
     {
-        // Extract all items, sort them by Type then by Name using LINQ
-        var populatedSlots = _slots.Where(s => !s.IsEmpty)
+        // Extract and sort items from the main inventory area (leaving hotbar slots 0 to _hotbarSlots-1 untouched)
+        var populatedSlots = _slots.Skip(_hotbarSlots)
+                                   .Where(s => !s.IsEmpty)
                                    .OrderBy(s => s.Item.Type)
                                    .ThenBy(s => s.Item.ItemName)
                                    .ToList();
 
-        // Re-populate the array
-        for (int i = 0; i < _totalSlots; i++)
+        // Re-assign sorted items back into the main inventory slots
+        int index = _hotbarSlots;
+        foreach (var slotData in populatedSlots)
         {
-            if (i < populatedSlots.Count)
-            {
-                _slots[i] = populatedSlots[i];
-            }
-            else
-            {
-                _slots[i] = new InventorySlot(); // Fill the rest with empty slots
-            }
+            _slots[index] = slotData;
+            index++;
         }
 
+        // Clear out the remaining empty slots in the grid
+        for (int i = index; i < _totalSlots; i++)
+        {
+            _slots[i] = new InventorySlot();
+        }
+
+        // Trigger UI refresh
         OnInventoryUpdated?.Invoke();
     }
 

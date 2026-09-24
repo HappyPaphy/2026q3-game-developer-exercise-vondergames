@@ -18,8 +18,19 @@ public class PlayerController : PlayerEntity
     private float _horizontalInput;
     private bool _isGrounded;
 
+    public static PlayerController Instance;
+
     protected override void Awake()
     {
+        if(Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
         _rb = GetComponent<Rigidbody2D>();
         _playerEntity = GetComponent<PlayerEntity>();
 

@@ -11,24 +11,26 @@ PrefabInstance:
     - target: {fileID: 1917888403139387654, guid: dde56d54b4a64104992247345c1682af, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300020, guid: a0e7f1167efba544bb8d6e3198ae44f9, type: 3}
+      objectReference: {fileID: 21300000, guid: 9e5e200069c8ec14b857e10db776c146, type: 3}
     - target: {fileID: 2085186013288454230, guid: dde56d54b4a64104992247345c1682af, type: 3}
       propertyPath: m_text
-      value: 'Magic Wand
-
-'
+      value: Stone
       objectReference: {fileID: 0}
     - target: {fileID: 2085186013288454230, guid: dde56d54b4a64104992247345c1682af, type: 3}
       propertyPath: m_fontSize
-      value: 7.6
+      value: 14.1
       objectReference: {fileID: 0}
+    - target: {fileID: 4204249957880925507, guid: dde56d54b4a64104992247345c1682af, type: 3}
+      propertyPath: ItemData
+      value: 
+      objectReference: {fileID: 11400000, guid: 00b90552a9d8ee44da7ff1be0fb67ef6, type: 2}
     - target: {fileID: 4204249957880925507, guid: dde56d54b4a64104992247345c1682af, type: 3}
       propertyPath: _itemData
       value: 
-      objectReference: {fileID: 11400000, guid: 434eedba1908fda49a1e92780e3510f9, type: 2}
+      objectReference: {fileID: 11400000, guid: 00b90552a9d8ee44da7ff1be0fb67ef6, type: 2}
     - target: {fileID: 4363813568694454455, guid: dde56d54b4a64104992247345c1682af, type: 3}
       propertyPath: m_Name
-      value: Item (Magic Wand)
+      value: Item (Stone)
       objectReference: {fileID: 0}
     - target: {fileID: 7252494650141449236, guid: dde56d54b4a64104992247345c1682af, type: 3}
       propertyPath: m_LocalPosition.x

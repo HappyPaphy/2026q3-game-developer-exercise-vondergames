@@ -19,3 +19,4 @@ MonoBehaviour:
   <Usage>k__BackingField: 1
   <MaxStackSize>k__BackingField: 1
   <IsEquipable>k__BackingField: 0
+  <WorldPrefab>k__BackingField: {fileID: 4363813568694454455, guid: dde56d54b4a64104992247345c1682af, type: 3}

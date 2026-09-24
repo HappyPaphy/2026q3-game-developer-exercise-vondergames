@@ -1,12 +1,12 @@
 using System.Collections.Generic;
+using System.Data;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class InventoryUI : MonoBehaviour
 {
-
     [Tooltip("Drag all the UI Slot GameObjects here in order (0 to 23).")]
     [SerializeField] private List<InventoryUISlot> _uiSlots;
     [SerializeField] private List<InventoryUISlot> _uiHotBarSlots_Inventory;
@@ -108,6 +108,7 @@ public class InventoryUI : MonoBehaviour
         _textItemDescription.text = dataSlot.Item.Description;
         _imageItemDetailsIcon.sprite = dataSlot.Item.Icon;
         _imageItemDetailsIcon.color = Color.white;
+        _imageItemDetailsIcon.SetNativeSize();
 
         // 2. Evaluate Item Usage for Button Display
         _btnDropItemObj.SetActive(true);
@@ -129,6 +130,15 @@ public class InventoryUI : MonoBehaviour
                 case ItemUsage.Equippable: _textPrimaryAction.text = "EQUIP"; break;
                 case ItemUsage.Consumable: _textPrimaryAction.text = "USE"; break;
                 case ItemUsage.Placable: _textPrimaryAction.text = "PLACE"; break;
+            }
+
+            if (dataIndex < InventoryManager.Instance.HotbarSlots)
+            {
+                _textHotbarAction.text = "REMOVE FROM HOTBAR";
+            }
+            else
+            {
+                _textHotbarAction.text = "ADD TO HOTBAR";
             }
         }
     }
@@ -167,9 +177,32 @@ public class InventoryUI : MonoBehaviour
         InventorySlot dataSlot = InventoryManager.Instance.GetSlot(_currentlySelectedDataIndex);
         if (dataSlot != null && !dataSlot.IsEmpty)
         {
-            // Remove the total amount held in this slot
-            InventoryManager.Instance.RemoveItem(_currentlySelectedDataIndex, dataSlot.Amount);
+            ItemData droppedItemData = dataSlot.Item;
+            int droppedAmount = dataSlot.Amount;
+
+            // Instantiate world prefab if assigned, at the player's position
+            if (droppedItemData.WorldPrefab != null)
+            {
+                GameObject player = PlayerController.Instance.gameObject;
+                Vector3 spawnPosition = player != null ? player.transform.position : transform.position;
+
+                GameObject droppedObj = Instantiate(droppedItemData.WorldPrefab, spawnPosition, Quaternion.identity);
+
+                // Pass the exact stack count to the world item component if it exists
+                Item worldItemComp = droppedObj.GetComponent<Item>();
+                if (worldItemComp != null)
+                {
+                    worldItemComp.ItemData = droppedItemData;
+                    worldItemComp.ApplyItemDataInfo();
+                    worldItemComp.IsPickUpInfinitely = false;
+                    worldItemComp.SetItemCount(droppedAmount);
+                }
+            }
+
+            // Remove entirely from inventory and refresh
+            InventoryManager.Instance.RemoveItem(_currentlySelectedDataIndex, droppedAmount);
             ClearDetailsPanel();
+            RefreshAllUISlot();
         }
     }
 
@@ -178,15 +211,71 @@ public class InventoryUI : MonoBehaviour
     {
         if (_currentlySelectedDataIndex < 0) return;
         InventorySlot dataSlot = InventoryManager.Instance.GetSlot(_currentlySelectedDataIndex);
+        if (dataSlot == null || dataSlot.IsEmpty) return;
 
-        // Handle logic based on dataSlot.Item.Usage here
+        switch (dataSlot.Item.Usage)
+        {
+            case ItemUsage.Equippable:
+                GameStatusMessage.Instance.CreateMessage($"Equipping item: {dataSlot.Item.ItemName}");
+                // Add your equip logic here
+                break;
+
+            case ItemUsage.Consumable:
+                GameStatusMessage.Instance.CreateMessage($"Consuming item: {dataSlot.Item.ItemName}");
+                // Reduce stack count by 1 upon consumption
+                InventoryManager.Instance.RemoveItem(_currentlySelectedDataIndex, 1);
+                break;
+
+            case ItemUsage.Placable:
+                GameStatusMessage.Instance.CreateMessage($"Placing item: {dataSlot.Item.ItemName}");
+                // Add your placement logic here
+                break;
+        }
+
+        RefreshAllUISlot();
+    }
+
+    public void ToggleHotbarAssignment()
+    {
+        if (_currentlySelectedDataIndex < 0) return;
+
+        int hotbarLimit = InventoryManager.Instance.HotbarSlots;
+
+        if (_currentlySelectedDataIndex < hotbarLimit)
+        {
+            // Case A: Currently in Hotbar -> Move to first available Main Inventory slot
+            for (int i = hotbarLimit; i < 40; i++) // assuming 40 total slots
+            {
+                InventorySlot targetSlot = InventoryManager.Instance.GetSlot(i);
+                if (targetSlot != null && targetSlot.IsEmpty)
+                {
+                    InventoryManager.Instance.SwapSlots(_currentlySelectedDataIndex, i);
+                    SelectSlot(i); // Update selection to new index
+                    return;
+                }
+            }
+        }
+        else
+        {
+            // Case B: Currently in Main Inventory -> Move to first available Hotbar slot
+            for (int i = 0; i < hotbarLimit; i++)
+            {
+                InventorySlot targetSlot = InventoryManager.Instance.GetSlot(i);
+                if (targetSlot != null && targetSlot.IsEmpty)
+                {
+                    InventoryManager.Instance.SwapSlots(_currentlySelectedDataIndex, i);
+                    SelectSlot(i); // Update selection to new index
+                    return;
+                }
+            }
+        }
     }
 
     private void EquipFromHotbar(int hotbarIndex)
     {
         InventorySlot slotToEquip = InventoryManager.Instance.GetSlot(hotbarIndex);
 
-        if (slotToEquip == null || slotToEquip.IsEmpty || !slotToEquip.Item.IsEquipable)
+        if (slotToEquip == null || slotToEquip.IsEmpty || slotToEquip.Item.Usage == ItemUsage.None)
         {
             return; // Can't equip nothing, or un-equipable items (like raw resources)
         }
@@ -201,8 +290,22 @@ public class InventoryUI : MonoBehaviour
         _currentlyEquippedSlotIndex = hotbarIndex;
         _uiSlots[_currentlyEquippedSlotIndex].SetHighlight(true);
 
-        // In a full game, you would fire another event here telling the PlayerController 
-        // to instantiate the weapon/tool prefab in the character's hands.
-        Debug.Log($"Equipped {slotToEquip.Item.ItemName}");
+        switch (slotToEquip.Item.Usage)
+        {
+            case ItemUsage.Equippable:
+                GameStatusMessage.Instance.CreateMessage($"Equipping item: {slotToEquip.Item.ItemName}");
+                break;
+
+            case ItemUsage.Consumable:
+                GameStatusMessage.Instance.CreateMessage($"Consuming item: {slotToEquip.Item.ItemName}");
+                InventoryManager.Instance.RemoveItem(_currentlySelectedDataIndex, 1);
+                break;
+
+            case ItemUsage.Placable:
+                GameStatusMessage.Instance.CreateMessage($"Placing item: {slotToEquip.Item.ItemName}");
+                break;
+        }
+
+        RefreshAllUISlot();
     }
 }

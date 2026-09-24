@@ -44,7 +44,9 @@
 
 &#x09;- Make Simple UI MockUp for Inventory (12.00 - 13.15)
 
-&#x09;- Make the Inventory UI and other related script.cs functional (13.30 - ??.??)
+&#x09;- Make the Inventory UI and other related script.cs functional (13.30 - 17.40)
+
+&#x09;- Make the hotbar usage functional by clicked (??.?? - ??.??)
 
 &#x09;
 

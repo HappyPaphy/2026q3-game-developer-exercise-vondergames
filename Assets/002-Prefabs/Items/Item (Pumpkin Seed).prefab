@@ -10,15 +10,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1656141169588840942, guid: dde56d54b4a64104992247345c1682af, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -45
+      value: -32.3
       objectReference: {fileID: 0}
     - target: {fileID: 1917888403139387654, guid: dde56d54b4a64104992247345c1682af, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: b2f3327f47464544293b6b9018e1296e, type: 3}
+      objectReference: {fileID: 21300000, guid: 8458ef58f3466354d80d3988eb70647c, type: 3}
     - target: {fileID: 2085186013288454230, guid: dde56d54b4a64104992247345c1682af, type: 3}
       propertyPath: m_text
-      value: 'Wooden Sword
+      value: 'Pumpkin Seed
 
 '
       objectReference: {fileID: 0}
@@ -27,12 +27,16 @@ PrefabInstance:
       value: 7.3
       objectReference: {fileID: 0}
     - target: {fileID: 4204249957880925507, guid: dde56d54b4a64104992247345c1682af, type: 3}
+      propertyPath: ItemData
+      value: 
+      objectReference: {fileID: 11400000, guid: 24f9e58c794c1184f82f581ba071ea4e, type: 2}
+    - target: {fileID: 4204249957880925507, guid: dde56d54b4a64104992247345c1682af, type: 3}
       propertyPath: _itemData
       value: 
-      objectReference: {fileID: 11400000, guid: f1114415dd8de0a409d4aa18484db818, type: 2}
+      objectReference: {fileID: 11400000, guid: 24f9e58c794c1184f82f581ba071ea4e, type: 2}
     - target: {fileID: 4363813568694454455, guid: dde56d54b4a64104992247345c1682af, type: 3}
       propertyPath: m_Name
-      value: Item (Wooden Sword)
+      value: Item (Pumpkin Seed)
       objectReference: {fileID: 0}
     - target: {fileID: 7252494650141449236, guid: dde56d54b4a64104992247345c1682af, type: 3}
       propertyPath: m_LocalPosition.x

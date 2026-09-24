@@ -8,9 +8,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4204249957880925507, guid: dde56d54b4a64104992247345c1682af, type: 3}
+      propertyPath: ItemData
+      value: 
+      objectReference: {fileID: 11400000, guid: be4851a18c5aeae45ba64046c46cad42, type: 2}
     - target: {fileID: 4363813568694454455, guid: dde56d54b4a64104992247345c1682af, type: 3}
       propertyPath: m_Name
-      value: Item (Lumber) Variant
+      value: Item (Lumber)
       objectReference: {fileID: 0}
     - target: {fileID: 7252494650141449236, guid: dde56d54b4a64104992247345c1682af, type: 3}
       propertyPath: m_LocalPosition.x

@@ -30,4 +30,5 @@ public class ItemData : ScriptableObject
 
     [Tooltip("Can this item be placed on the hotbar and used/equipped?")]
     [field: SerializeField] public bool IsEquipable { get; private set; }
+    [field: SerializeField] public GameObject WorldPrefab { get; private set; }
 }

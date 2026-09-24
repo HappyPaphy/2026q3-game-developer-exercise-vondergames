@@ -1,16 +1,19 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class Item : MonoBehaviour
 {
     [SerializeField] private GameObject _interactHint;
-    [SerializeField] private ItemData _itemData;
+    [SerializeField] private TextMeshProUGUI _textItemName;
+    [SerializeField] private SpriteRenderer _sprRndrItemIcon;
     [SerializeField] private int _itemCount;
 
     [SerializeField] private float _detectPlayerRadius;
     [SerializeField] private LayerMask _playerLayer;
-    [SerializeField] private bool isPickUpInfinitely = false;
 
+    public ItemData ItemData;
+    public bool IsPickUpInfinitely = false;
     private bool _isPlayerInRange = false;
 
     void Start()
@@ -49,11 +52,11 @@ public class Item : MonoBehaviour
 
     private void PickUpItem()
     {
-        int itemAddedCount = InventoryManager.Instance.AddItem(_itemData, _itemCount);
+        int itemAddedCount = InventoryManager.Instance.AddItem(ItemData, _itemCount);
 
         if(itemAddedCount == 0)
         {
-            if(!isPickUpInfinitely)
+            if(!IsPickUpInfinitely)
             {
                 Destroy(gameObject);
             }
@@ -66,6 +69,19 @@ public class Item : MonoBehaviour
         {
             _itemCount = itemAddedCount; // Remain what couldn't be picked up
         }
+
+        GameStatusMessage.Instance.CreateMessage($"You pick up [{_itemCount}] [{ItemData.ItemName}]");
+    }
+
+    public void ApplyItemDataInfo()
+    {
+        _textItemName.text = ItemData.ItemName;
+        _sprRndrItemIcon.sprite = ItemData.Icon;
+    }
+
+    public void SetItemCount(int count)
+    {
+        _itemCount = count;
     }
 
     private void CheckPlayerRange()

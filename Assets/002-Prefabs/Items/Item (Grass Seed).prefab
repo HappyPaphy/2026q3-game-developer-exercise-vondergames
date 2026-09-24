@@ -27,9 +27,17 @@ PrefabInstance:
       value: 7.9
       objectReference: {fileID: 0}
     - target: {fileID: 4204249957880925507, guid: dde56d54b4a64104992247345c1682af, type: 3}
+      propertyPath: ItemData
+      value: 
+      objectReference: {fileID: 11400000, guid: 375a802d9a760224a908dfecaf098f5b, type: 2}
+    - target: {fileID: 4204249957880925507, guid: dde56d54b4a64104992247345c1682af, type: 3}
       propertyPath: _itemData
       value: 
       objectReference: {fileID: 11400000, guid: 375a802d9a760224a908dfecaf098f5b, type: 2}
+    - target: {fileID: 4204249957880925507, guid: dde56d54b4a64104992247345c1682af, type: 3}
+      propertyPath: IsPickUpInfinitely
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4363813568694454455, guid: dde56d54b4a64104992247345c1682af, type: 3}
       propertyPath: m_Name
       value: Item (Grass Seed)

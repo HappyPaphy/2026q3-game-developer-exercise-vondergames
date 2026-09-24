@@ -316,13 +316,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Item
   _interactHint: {fileID: 2570383270290024759}
-  _itemData: {fileID: 11400000, guid: be4851a18c5aeae45ba64046c46cad42, type: 2}
+  _textItemName: {fileID: 2085186013288454230}
+  _sprRndrItemIcon: {fileID: 1917888403139387654}
   _itemCount: 1
   _detectPlayerRadius: 1.2
   _playerLayer:
     serializedVersion: 2
     m_Bits: 64
-  isPickUpInfinitely: 1
+  ItemData: {fileID: 0}
+  IsPickUpInfinitely: 0
 --- !u!1 &5553561507853657818
 GameObject:
   m_ObjectHideFlags: 0
