@@ -82,10 +82,6 @@ public class EnvironmentVisualManager : MonoBehaviour
 
     void Update()
     {
-        if (Keyboard.current.iKey.wasPressedThisFrame) ChangeDayPeriod(0);
-        if (Keyboard.current.oKey.wasPressedThisFrame) ChangeDayPeriod(1);
-        if (Keyboard.current.pKey.wasPressedThisFrame) ChangeDayPeriod(2);
-
         HandleDayPeriodChange();
         HandleTimePeriod();
         UpdateUI();

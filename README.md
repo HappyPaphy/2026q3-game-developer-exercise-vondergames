@@ -2,11 +2,11 @@
 
 
 
-September 23th 2026 (Day 1)
+###### September 23th 2026 (Day 1)
 
 
 
-=> 15.00 
+=> 15.00
 
 &#x09;- Install Unity Version (6000.3.15f1)
 
@@ -18,9 +18,7 @@ September 23th 2026 (Day 1)
 
 
 
-=> System 1 Task
-
-&#x09;- Begin System 1 Task \[Time Hop System]
+=> System 1 Task \[Time Hop System]
 
 &#x09;- Modifying Visual Art Asset for day periods. (17.11 - 17.45)
 
@@ -31,6 +29,22 @@ September 23th 2026 (Day 1)
 &#x09;- Make EnvironmentTrigger by press F when player in range functional (19.35 - 20.00)
 
 &#x09;- Make Period Change Automatically + Make System 1 Fully Functional (21.00 - 22.00)
+
+
+
+###### September 23th 2026 (Day 2)
+
+
+
+=> System 2 Task \[Inventory System]
+
+&#x09;- Create a simple Item object to collect in the scene. (07.30 - 07.35)
+
+&#x09;- Make Scripts.cs about Item and Inventory. (11.35 - 12.00)
+
+&#x09;- Make Simple UI MockUp for Inventory (12.00 - 13.15)
+
+&#x09;- Make the Inventory UI and other related script.cs functional (13.30 - ??.??)
 
 &#x09;
 
