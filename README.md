@@ -1,7 +1,9 @@
 # 2026q3-game-developer-exercise-vondergames-JiratthaKiatmonkong
 
 
-Video Link : 
+Game Build Link : [https://drive.google.com/file/d/1fkbkjU0MSMFST1agKr1LQYwXxoEBWnbi/view?usp=sharing](https://drive.google.com/file/d/1fkbkjU0MSMFST1agKr1LQYwXxoEBWnbi/view?usp=sharing)
+
+Video Link : [https://drive.google.com/file/d/1liThZtxTRGB3K29YGe5tptreLC\_QFDQw/view?usp=sharing](https://drive.google.com/file/d/1liThZtxTRGB3K29YGe5tptreLC_QFDQw/view?usp=sharing)
 
 
 ###### September 23th 2026 (Day 1)
