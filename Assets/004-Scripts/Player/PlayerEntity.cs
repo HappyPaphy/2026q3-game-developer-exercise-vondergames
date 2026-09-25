@@ -84,7 +84,7 @@ public class PlayerEntity : CharacterEntity
 
     public override void Die()
     {
-        isDiedOnce = true;
+        PlayerController.Instance.CharacterHealthComponent.SetHP(100);
 
         base.Die();
     }

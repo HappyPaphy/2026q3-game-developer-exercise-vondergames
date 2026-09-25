@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class PlayerController : PlayerEntity 
@@ -12,6 +14,13 @@ public class PlayerController : PlayerEntity
     [SerializeField] private float _groundCheckRadius = 0.2f;
     [SerializeField] private LayerMask _groundLayer;
 
+    [SerializeField] private SpriteRenderer _sprRndr;
+
+    public List<Weapon> RangeWeapons;
+    public Transform WeaponPos;
+    private float _weaponPosOffSet = 0.2f;
+
+    private Vector2 _currentTarget = Vector2.zero;
     private Rigidbody2D _rb;
     private PlayerEntity _playerEntity;
 
@@ -46,6 +55,10 @@ public class PlayerController : PlayerEntity
         GatherInput();
         CheckGroundedStatus();
         HandleJump();
+
+        WeaponSetPos();
+        PlayerAim();
+
         base.Update();
     }
 
@@ -106,10 +119,60 @@ public class PlayerController : PlayerEntity
     {
         _rb.linearVelocity = new Vector2(_horizontalInput * _moveSpeed, _rb.linearVelocity.y);
 
-        if (_horizontalInput != 0)
+        if (_horizontalInput > 0)
         {
-            transform.localScale = new Vector3(Mathf.Sign(_horizontalInput), 1, 1);
+            _sprRndr.flipX = false;
         }
+        else
+        {
+            _sprRndr.flipX = true;
+        }
+    }
+
+    private void WeaponSetPos()
+    {
+        if(RangeWeapons.Count <= 0) { return; }
+
+        foreach (Weapon weapon in RangeWeapons)
+        {
+            if (weapon != null)
+            {
+                if ((weapon.transform.localEulerAngles.z > 90) && (weapon.transform.localEulerAngles.z < 270))
+                {
+                    weapon.transform.position = WeaponPos.position + new Vector3(0f, _weaponPosOffSet, 0f);
+                    _sprRndr.flipX = true;
+                    weapon.GetComponent<Weapon>().WeaponSprRndr.flipY = true;
+                }
+                else
+                {
+                    weapon.transform.position = WeaponPos.position - new Vector3(0f, 0f, 0f);
+                    _sprRndr.flipX = false;
+                    weapon.GetComponent<Weapon>().WeaponSprRndr.flipY = false;
+                }
+            }
+        }
+    }
+
+    private void PlayerAim()
+    {
+        if (RangeWeapons.Count <= 0) { return; }
+
+        _currentTarget = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+
+        foreach (Weapon weapon in RangeWeapons)
+        {
+            if (weapon != null)
+            {
+                Vector2 lookDirection = _currentTarget - weapon.GetComponent<Rigidbody2D>().position;
+                float angle = Mathf.Atan2(lookDirection.y, lookDirection.x) * Mathf.Rad2Deg;
+                weapon.GetComponent<Rigidbody2D>().rotation = angle;
+            }
+        }
+    }
+
+    public override void TakeDamage(float damageValue)
+    {
+        base.TakeDamage(damageValue);
     }
 
     private void OnDrawGizmosSelected()

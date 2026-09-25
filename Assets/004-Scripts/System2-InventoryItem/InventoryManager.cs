@@ -182,6 +182,7 @@ public class InventoryManager : MonoBehaviour
 
         // Trigger UI refresh
         OnInventoryUpdated?.Invoke();
+        InventoryUI.RefreshAllUISlot();
     }
 
     public List<InventorySlot> GetFilteredItems(ItemType targetType)

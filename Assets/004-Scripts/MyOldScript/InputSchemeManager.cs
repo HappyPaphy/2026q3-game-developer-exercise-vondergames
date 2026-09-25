@@ -103,8 +103,8 @@ public class InputSchemeManager : MonoBehaviour
                 }
                 else
                 {
-                    Cursor.visible = false;
-                    Cursor.lockState = CursorLockMode.Locked;
+                    //Cursor.visible = false;
+                    //Cursor.lockState = CursorLockMode.Locked;
                 }
 
                 SetInputMode(InputMode.PC);
