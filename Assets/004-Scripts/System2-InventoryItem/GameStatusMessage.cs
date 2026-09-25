@@ -18,10 +18,10 @@ public class GameStatusMessage : MonoBehaviour
         }
     }
 
-    public void CreateMessage(string message)
+    public void CreateMessage(string message, Color color)
     {
         GameObject obj = Instantiate(_statusMessagePrefab, transform);
         StatusMessageUI messageUI = obj.GetComponent<StatusMessageUI>();
-        StartCoroutine(messageUI.ShowStatusMessage(message));
+        StartCoroutine(messageUI.ShowStatusMessage(message, color));
     }
 }

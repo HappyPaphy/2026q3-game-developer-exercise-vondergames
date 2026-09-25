@@ -30,8 +30,9 @@ public class InventoryUISlot : MonoBehaviour
             _iconImage.color = Color.clear;
             _amountText.text = string.Empty;
             _CountPanel.SetActive(false);
+            SetHighlight(false);
 
-            if(_button != null)
+            if (_button != null)
             {
                 _button.interactable = false;
                 _nav.mode = Navigation.Mode.None;

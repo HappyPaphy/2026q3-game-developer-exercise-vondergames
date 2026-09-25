@@ -46,7 +46,17 @@
 
 &#x09;- Make the Inventory UI and other related script.cs functional (13.30 - 17.40)
 
-&#x09;- Make the hotbar usage functional by clicked (??.?? - ??.??)
+&#x09;- Make the hotbar usage functional by clicked or HotKey (21.00 - 21.30)
+
+
+
+=> System 4 Task \[Crafting System]
+
+&#x09;- Make Script.cs related to CraftingRecipeData and CraftingManager (13.45 - 15.00)
+
+&#x09;- Make the Script.cs related to Crafting System functional (19.00 - 20.30)
+
+&#x09;- Make the crafting station functional and not interfere with the Instant Crafting system (20.45 - 21.00)	
 
 &#x09;
 

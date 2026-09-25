@@ -8,9 +8,10 @@ public class StatusMessageUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _textStatusMessage;
     [SerializeField] private CanvasGroup _canvasGroupMessage;
 
-    public IEnumerator ShowStatusMessage(string message)
+    public IEnumerator ShowStatusMessage(string message, Color color)
     {
         _textStatusMessage.text = message;
+        _textStatusMessage.color = color;
         _canvasGroupMessage.alpha = 1f;
         yield return new WaitForSeconds(2f);
 

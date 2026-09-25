@@ -74,10 +74,9 @@ public class PlayerController : PlayerEntity
             _horizontalInput = 0f;
         }
 
-
         if (Keyboard.current.iKey.wasPressedThisFrame)
         {
-            InventoryManager.Instance.OpenInventoryUIPanel();
+            InventoryManager.Instance.ToggleInventoryUIPanel();
         }
     }
 

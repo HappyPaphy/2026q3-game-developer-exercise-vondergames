@@ -70,7 +70,8 @@ public class Item : MonoBehaviour
             _itemCount = itemAddedCount; // Remain what couldn't be picked up
         }
 
-        GameStatusMessage.Instance.CreateMessage($"You pick up [{_itemCount}] [{ItemData.ItemName}]");
+        InventoryManager.Instance.InventoryUI.RefreshAllUISlot();
+        GameStatusMessage.Instance.CreateMessage($"You pick up [{_itemCount}] [{ItemData.ItemName}]", Color.lightGreen);
     }
 
     public void ApplyItemDataInfo()

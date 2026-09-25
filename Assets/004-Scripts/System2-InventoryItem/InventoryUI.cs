@@ -8,9 +8,9 @@ using UnityEngine.UI;
 public class InventoryUI : MonoBehaviour
 {
     [Tooltip("Drag all the UI Slot GameObjects here in order (0 to 23).")]
-    [SerializeField] private List<InventoryUISlot> _uiSlots;
-    [SerializeField] private List<InventoryUISlot> _uiHotBarSlots_Inventory;
-    [SerializeField] private List<InventoryUISlot> _uiHotBarSlots_InGame;
+    public List<InventoryUISlot> UISlots;
+    public List<InventoryUISlot> UIHotBarSlots_Inventory;
+    public List<InventoryUISlot> UIHotBarSlots_InGame;
 
     [Header("Item Details Panel")]
     [SerializeField] private TextMeshProUGUI _textItemName;
@@ -59,20 +59,20 @@ public class InventoryUI : MonoBehaviour
         int hotbarOffset = InventoryManager.Instance.HotbarSlots;
 
         // Hotbars read from data indices 0 to 7 (Offset = 0)
-        for (int i = 0; i < _uiHotBarSlots_Inventory.Count; i++)
+        for (int i = 0; i < UIHotBarSlots_Inventory.Count; i++)
         {
-            RefreshUISlot(_uiHotBarSlots_Inventory, i, 0);
+            RefreshUISlot(UIHotBarSlots_Inventory, i, 0);
         }
 
-        for (int i = 0; i < _uiHotBarSlots_InGame.Count; i++)
+        for (int i = 0; i < UIHotBarSlots_InGame.Count; i++)
         {
-            RefreshUISlot(_uiHotBarSlots_InGame, i, 0);
+            RefreshUISlot(UIHotBarSlots_InGame, i, 0);
         }
 
         // Main Inventory UI reads from data indices 8 to 39 (Offset = HotbarSlots)
-        for (int i = 0; i < _uiSlots.Count; i++)
+        for (int i = 0; i < UISlots.Count; i++)
         {
-            RefreshUISlot(_uiSlots, i, hotbarOffset);
+            RefreshUISlot(UISlots, i, hotbarOffset);
         }
 
         if (_currentlySelectedDataIndex >= 0)
@@ -168,6 +168,9 @@ public class InventoryUI : MonoBehaviour
         if (Keyboard.current.digit6Key.wasPressedThisFrame) EquipFromHotbar(5);
         if (Keyboard.current.digit7Key.wasPressedThisFrame) EquipFromHotbar(6);
         if (Keyboard.current.digit8Key.wasPressedThisFrame) EquipFromHotbar(7);
+
+        if (Keyboard.current.gKey.wasPressedThisFrame) DropSelectedItem();
+        if (Keyboard.current.eKey.wasPressedThisFrame) ExecutePrimaryAction();
     }
 
     public void DropSelectedItem()
@@ -199,6 +202,8 @@ public class InventoryUI : MonoBehaviour
                 }
             }
 
+            GameStatusMessage.Instance.CreateMessage($"Dropped item: [{droppedAmount}] [{dataSlot.Item.ItemName}]", Color.softRed);
+
             // Remove entirely from inventory and refresh
             InventoryManager.Instance.RemoveItem(_currentlySelectedDataIndex, droppedAmount);
             ClearDetailsPanel();
@@ -216,18 +221,18 @@ public class InventoryUI : MonoBehaviour
         switch (dataSlot.Item.Usage)
         {
             case ItemUsage.Equippable:
-                GameStatusMessage.Instance.CreateMessage($"Equipping item: {dataSlot.Item.ItemName}");
+                GameStatusMessage.Instance.CreateMessage($"Equipping item: [{dataSlot.Item.ItemName}]", Color.lightBlue);
                 // Add your equip logic here
                 break;
 
             case ItemUsage.Consumable:
-                GameStatusMessage.Instance.CreateMessage($"Consuming item: {dataSlot.Item.ItemName}");
+                GameStatusMessage.Instance.CreateMessage($"Consuming item: [{dataSlot.Item.ItemName}]", Color.lightBlue);
                 // Reduce stack count by 1 upon consumption
                 InventoryManager.Instance.RemoveItem(_currentlySelectedDataIndex, 1);
                 break;
 
             case ItemUsage.Placable:
-                GameStatusMessage.Instance.CreateMessage($"Placing item: {dataSlot.Item.ItemName}");
+                GameStatusMessage.Instance.CreateMessage($"Placing item: [{dataSlot.Item.ItemName}]", Color.lightBlue);
                 // Add your placement logic here
                 break;
         }
@@ -251,6 +256,7 @@ public class InventoryUI : MonoBehaviour
                 {
                     InventoryManager.Instance.SwapSlots(_currentlySelectedDataIndex, i);
                     SelectSlot(i); // Update selection to new index
+                    RefreshAllUISlot();
                     return;
                 }
             }
@@ -265,6 +271,7 @@ public class InventoryUI : MonoBehaviour
                 {
                     InventoryManager.Instance.SwapSlots(_currentlySelectedDataIndex, i);
                     SelectSlot(i); // Update selection to new index
+                    RefreshAllUISlot();
                     return;
                 }
             }
@@ -281,31 +288,18 @@ public class InventoryUI : MonoBehaviour
         }
 
         // Turn off previous highlight
-        if (_currentlyEquippedSlotIndex >= 0 && _currentlyEquippedSlotIndex < _uiSlots.Count)
+        if (_currentlyEquippedSlotIndex >= 0 && _currentlyEquippedSlotIndex < UIHotBarSlots_InGame.Count)
         {
-            _uiSlots[_currentlyEquippedSlotIndex].SetHighlight(false);
+            UIHotBarSlots_InGame[_currentlyEquippedSlotIndex].SetHighlight(false);
         }
 
         // Highlight new selection
         _currentlyEquippedSlotIndex = hotbarIndex;
-        _uiSlots[_currentlyEquippedSlotIndex].SetHighlight(true);
+        UIHotBarSlots_InGame[_currentlyEquippedSlotIndex].SetHighlight(true);
 
-        switch (slotToEquip.Item.Usage)
-        {
-            case ItemUsage.Equippable:
-                GameStatusMessage.Instance.CreateMessage($"Equipping item: {slotToEquip.Item.ItemName}");
-                break;
+        GameStatusMessage.Instance.CreateMessage($"Selected item: {slotToEquip.Item.ItemName}", Color.white);
 
-            case ItemUsage.Consumable:
-                GameStatusMessage.Instance.CreateMessage($"Consuming item: {slotToEquip.Item.ItemName}");
-                InventoryManager.Instance.RemoveItem(_currentlySelectedDataIndex, 1);
-                break;
-
-            case ItemUsage.Placable:
-                GameStatusMessage.Instance.CreateMessage($"Placing item: {slotToEquip.Item.ItemName}");
-                break;
-        }
-
+        SelectSlot(hotbarIndex);
         RefreshAllUISlot();
     }
 }

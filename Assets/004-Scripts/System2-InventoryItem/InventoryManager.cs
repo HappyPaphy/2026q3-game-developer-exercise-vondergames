@@ -36,12 +36,15 @@ public class InventorySlot
 
 public class InventoryManager : MonoBehaviour
 {
+    [HideInInspector] public bool IsInventoryUIActive = false;
+
     [SerializeField] private int _totalSlots = 40;
     [SerializeField] private int _hotbarSlots = 8;
 
-    [SerializeField] private InventoryUI _inventoryUI;
     [SerializeField] private GameObject _inventoryUIPanel;
 
+
+    public InventoryUI InventoryUI;
     public int HotbarSlots => _hotbarSlots;
 
     private InventorySlot[] _slots;
@@ -66,6 +69,14 @@ public class InventoryManager : MonoBehaviour
         for (int i = 0; i < _totalSlots; i++)
         {
             _slots[i] = new InventorySlot();
+        }
+    }
+
+    private void Update()
+    {
+        if(Keyboard.current.cKey.wasPressedThisFrame)
+        {
+            CloseInventoryUIPanel();
         }
     }
 
@@ -185,9 +196,17 @@ public class InventoryManager : MonoBehaviour
         return _slots[index];
     }
 
-    public void OpenInventoryUIPanel()
+    public void ToggleInventoryUIPanel()
     {
-        _inventoryUI.RefreshAllUISlot();
+        InventoryUI.RefreshAllUISlot();
         _inventoryUIPanel.SetActive(!_inventoryUIPanel.activeInHierarchy);
+        IsInventoryUIActive = !_inventoryUIPanel.activeInHierarchy;
+    }
+
+    private void CloseInventoryUIPanel()
+    {
+        InventoryUI.RefreshAllUISlot();
+        _inventoryUIPanel.SetActive(false);
+        IsInventoryUIActive = false;
     }
 }
